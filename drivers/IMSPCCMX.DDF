@@ -1,0 +1,105 @@
+;
+; IMSPCCMX.DDF
+; Multiuser DOS device driver configuration file for TCL PCC/MX Card
+;
+; Copyright (C) 1994 Intelligent Micro Software Ltd.
+; All rights reserved.
+;
+; Revision 1.0	- Febraury 1994
+;
+
+define "MACRO1"
+
+FixedResources
+	mu_latch 0
+	mu_irq 0
+	mu_xor_and 0
+	mu_reset 0
+	mu_resdat 0
+	mu_dd_id 055h
+	allowuse[0-7]   "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+	allowuse[8-8]   "unused" "prn" 
+	allowuse[9-16]  "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+	allowuse[17-17] "unused" "prn" 
+	allowuse[18-25] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+	allowuse[26-26] "unused" "prn" 
+	allowuse[27-34] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+	allowuse[35-35] "unused" "prn" 
+	allowuse[36-43] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+	allowuse[44-44] "unused" "prn" 
+	allowuse[45-52] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+	allowuse[53-53] "unused" "prn" 
+	allowuse[54-61] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+	allowuse[62-62] "unused" "prn" 
+	allowuse[63-70] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+	allowuse[71-71] "unused" "prn" 
+
+
+	prompt "Number of ports"
+		choice "9" mu_nports 9
+		choice "18" mu_nports 18
+		choice "27" mu_nports 27
+		choice "36" mu_nports 36
+		help
+		"Select the number of ports you require."
+
+	prompt "Address Range"
+		choice "C800-C9FF"  mu_port 0C800h  mem 0C800h-0C9FFh
+		choice "A000-A1FF"  mu_port 0A000h  mem 0A000h-0A1FFh
+		choice "A200-A3FF"  mu_port 0A200h  mem 0A200h-0A3FFh
+		choice "A400-A5FF"  mu_port 0A400h  mem 0A400h-0A5FFh
+		choice "A600-A7FF"  mu_port 0A600h  mem 0A600h-0A7FFh
+		choice "A800-A9FF"  mu_port 0A800h  mem 0A800h-0A9FFh
+		choice "AA00-ABFF"  mu_port 0AA00h  mem 0AA00h-0ABFFh
+		choice "AC00-ADFF"  mu_port 0AC00h  mem 0AC00h-0ADFFh
+		choice "AE00-AFFF"  mu_port 0AE00h  mem 0AE00h-0AFFFh
+		choice "B000-B1FF"  mu_port 0B000h  mem 0B000h-0B1FFh
+		choice "B200-B3FF"  mu_port 0B200h  mem 0B200h-0B3FFh
+		choice "B400-B5FF"  mu_port 0B400h  mem 0B400h-0B5FFh
+		choice "B600-B7FF"  mu_port 0B600h  mem 0B600h-0B7FFh
+		choice "B800-B9FF"  mu_port 0B800h  mem 0B800h-0B9FFh
+		choice "BA00-BBFF"  mu_port 0BA00h  mem 0BA00h-0BBFFh
+		choice "BC00-BDFF"  mu_port 0BC00h  mem 0BC00h-0BDFFh
+		choice "BE00-BFFF"  mu_port 0BE00h  mem 0BE00h-0BFFFh
+		choice "C000-C1FF"  mu_port 0C000h  mem 0C000h-0C1FFh
+		choice "C200-C3FF"  mu_port 0C200h  mem 0C200h-0C3FFh
+		choice "C400-C5FF"  mu_port 0C400h  mem 0C400h-0C5FFh
+		choice "C600-C7FF"  mu_port 0C600h  mem 0C600h-0C7FFh
+		choice "C800-C9FF"  mu_port 0C800h  mem 0C800h-0C9FFh
+		choice "CA00-CBFF"  mu_port 0CA00h  mem 0CA00h-0CBFFh
+		choice "CC00-CDFF"  mu_port 0CC00h  mem 0CC00h-0CDFFh
+		choice "CE00-CFFF"  mu_port 0CE00h  mem 0CE00h-0CFFFh
+		choice "D000-D1FF"  mu_port 0D000h  mem 0D000h-0D1FFh
+		choice "D200-D3FF"  mu_port 0D200h  mem 0D200h-0D3FFh
+		choice "D400-D5FF"  mu_port 0D400h  mem 0D400h-0D5FFh
+		choice "D600-D7FF"  mu_port 0D600h  mem 0D600h-0D7FFh
+		choice "D800-D9FF"  mu_port 0D800h  mem 0D800h-0D9FFh
+		choice "DA00-DBFF"  mu_port 0DA00h  mem 0DA00h-0DBFFh
+		choice "DC00-DDFF"  mu_port 0DC00h  mem 0DC00h-0DDFFh
+		choice "DE00-DFFF"  mu_port 0DE00h  mem 0DE00h-0DFFFh
+		choice "E000-E1FF"  mu_port 0E000h  mem 0E000h-0E1FFh
+		choice "E200-E3FF"  mu_port 0E200h  mem 0E200h-0E3FFh
+		choice "E400-E5FF"  mu_port 0E400h  mem 0E400h-0E5FFh
+		choice "E600-E7FF"  mu_port 0E600h  mem 0E600h-0E7FFh
+		choice "E800-E9FF"  mu_port 0E800h  mem 0E800h-0E9FFh
+		choice "EA00-EBFF"  mu_port 0EA00h  mem 0EA00h-0EBFFh
+		choice "EC00-EDFF"  mu_port 0EC00h  mem 0EC00h-0EDFFh
+		choice "EE00-EFFF"  mu_port 0EE00h  mem 0EE00h-0EFFFh
+		choice "Autoscan"   mu_port 0FFFFh
+		help
+		"Select the address range to be used"
+
+
+DriverID "IMSPCCMX.SYS"
+	DriverName "TCL PCC/MX Card Driver"
+	DriverType "extmulti"
+
+	FixedResources
+
+	Prompt "Card Type"
+		choice "TCL PCC/MX Card" include "MACRO1"
+		Help
+"* TCL PCC/MX Card *\n\n
+This driver supports the TCL PCC/MX card, a high performance Multi-port 
+card designed for use over leased line or ISDN connections."
+

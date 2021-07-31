@@ -1,0 +1,27 @@
+;
+; IMSFX.DDF
+; Multiuser DOS device driver configuration file for IMS FX Smart Card
+;
+; Copyright (C) 1994 Intelligent Micro Software Ltd.
+; All rights reserved.
+;
+; Revision 1.0	- Febraury 1994
+;
+
+DriverID "IMSFX.SYS"
+	DriverName "IMS FX Smart Card Driver"
+	DriverType "extmulti"
+
+	FixedResources
+		allowuse[0-255] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+
+
+	Prompt "Card Type"
+		choice "IMS FX Card" mu_port 001h mu_nports 16
+							 mu_latch 0 mu_irq 0
+							 mu_xor_and 0 mu_reset 0
+							 mu_resdat 0 mu_dd_id 053h
+		Help
+"* FX Smart card *\n\n
+This driver supports the Future FX Smart card."
+

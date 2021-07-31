@@ -1,0 +1,76 @@
+;
+; EXTGEN.DDF
+; Multiuser DOS device driver configuration file for generic serial cards
+;
+; Copyright (C) 1994 Intelligent Micro Software Limited.
+; All rights reserved.
+;
+; Revision 1.1	- February 1994
+; Revision 1.0	- November 1993
+;
+
+Define "MACRO1"
+
+	FixedResources
+		mu_port 00001h
+		mu_latch 0
+		mu_xor_and 0
+		mu_reset 0
+		mu_resdat 0
+		mu_dd_id 0
+		allowuse[0-255] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+
+
+	prompt "Number of ports"
+		choice "1" mu_nports 1
+		choice "2" mu_nports 2
+		choice "3" mu_nports 3
+		choice "4" mu_nports 4
+		choice "5" mu_nports 5
+		choice "6" mu_nports 6
+		choice "7" mu_nports 7
+		choice "8" mu_nports 8
+		choice "12" mu_nports 12
+		choice "16" mu_nports 16
+		choice "20" mu_nports 20
+		choice "24" mu_nports 24
+		choice "28" mu_nports 28
+		choice "32" mu_nports 32
+		choice "36" mu_nports 36
+		choice "40" mu_nports 40
+		choice "44" mu_nports 44
+		choice "48" mu_nports 48
+		choice "52" mu_nports 52
+		choice "56" mu_nports 56
+		choice "60" mu_nports 60
+		choice "64" mu_nports 64
+		help
+		"Select the number of ports you require."
+
+	prompt "Adapter Interrupt Level"
+		choice "NONE" mu_irq 0  int 0
+		choice "3"    mu_irq 3  int 3
+		choice "4"    mu_irq 4  int 4
+		choice "5"    mu_irq 5  int 5
+		choice "7"    mu_irq 7  int 7
+		choice "10"   mu_irq 10 int 10
+		choice "11"   mu_irq 11 int 11
+		choice "12"   mu_irq 12 int 12
+		choice "15"   mu_irq 15 int 15
+		help
+		"Select the interrupt level to be used"
+
+DriverID "EXTGEN.INT"
+	DriverName "Generic Multi-Port Driver"
+	DriverType "extgen"
+
+	FixedResources
+		allowuse[0-255] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+
+	Prompt "Card Type"
+		choice "Generic Multi-Port Card" include "MACRO1"
+		Help
+"* Generic Driver *\n\n
+This driver is for use with Third-Party drivers written for Multiuser DOS.\n\n
+The generic driver must be installed manually editing the MCONFIG.SYS file. And
+must appear first in the driver list after COM (Serial) Ports."

@@ -1,0 +1,17 @@
+;                                                                             
+; INTMON.DDF
+; Multiuser DOS device driver configuration file for internal main console
+;
+; Revision 1.0	- October 1993
+;                                                                           
+
+driverid "INTMON.INT"
+drivername "Main Console"
+drivertype "intmon"
+
+FixedResources
+	allowuse[0-255] "graf"
+
+Prompt "Card Type"
+	choice "Main Console"
+	help "Select this option for your main console."

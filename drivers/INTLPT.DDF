@@ -1,0 +1,18 @@
+;                                                                             
+; INTLPT.DDF
+; Multiuser DOS device driver configuration file for internal LPT ports
+;
+; Revision 1.0	- October 1993
+;                                                                           
+
+driverid "INTLPT.INT"
+drivername "LPT (Parallel) Ports"
+drivertype "intlpt"
+
+FixedResources
+	allowuse[0-255] "unused" "prn"
+	io 3bch-3bfh 378h-37fh 270h-27fh
+
+Prompt "Card Type"
+	choice "LPT (Parallel) Ports"
+	Help "Select this option for your internal parallel LPT ports."

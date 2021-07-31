@@ -1,0 +1,20 @@
+;                                                                             
+; INTCOM.DDF
+; Multiuser DOS device driver configuration file for internal 8250/16450/16550
+; (and compatible) COM cards
+;
+; $Header: INTCOM.DDF 1.1 94/09/02 11:06:00 BORIS$
+;                                                                           
+
+DriverID "INTCOM.INT"
+	DriverName "COM (Serial) Ports"
+	DriverType "intcom"
+
+	FixedResources
+		int 4 io 3f8h-3ffh			; COM1
+		int 3 io 2f8h-2ffh			; COM2
+	
+	prompt "Card Type"
+		choice "COM (Serial) Ports"
+		help "Select This Option for the internal serial COM ports driver."
+

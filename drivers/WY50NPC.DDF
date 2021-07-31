@@ -1,0 +1,21 @@
+;
+; WY50NPC.DDF
+; Multiuser DOS device driver configuration file for WYSE 50 terminal
+;
+; Revision 1.0	- September 1994
+;
+
+DriverID "WY50NPC.SYS"
+	DriverName "WYSE 50"
+	DriverType "extterm"
+
+	FixedResources
+
+	prompt "Terminal Type"
+		choice "Wyse 50" termatt 020h termsat 00fh termemul 2 termtype 081h
+		help "Select the terminal type required.\n\n
+Use Wyse 60/120 for Wyse and other PCTERM terminals.\n
+Use Wyse 370 for Wyse and other colour PCTERM terminals including older C192's.\n
+Use IMSTERM for terminals running the IMSTERM protocol, eg PC's running IMSTERM, later versions of the C192 terminal, or one of IMS's network terminal emulators\n
+Use DUMB only when none of the above are suitable. NB it gives only one DOS session, and limited support for applications"
+

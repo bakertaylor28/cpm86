@@ -1,0 +1,32 @@
+;
+; INTNONE.DDF
+; Multiuser DOS device driver configuration file for uninstalled station
+; or multi-port drivers
+; This file also defines the default baud rates etc to be prompted for
+; where a DDF file has no allowxxxxx lines.
+;
+; Revision 1.0	- October 1993
+;
+
+driverid "INTNONE.INT"
+drivername "Not Installed"
+drivertype "none"
+
+	fixedresources
+		mu_nports 0
+		allowuse[0-255]  "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+		allowbaud[0-255] "115200" "76800" "57600" "38400" "19200" "9600" "7200"
+				  		 "4800" "3600" "2400" "2000" "1800" "1200" "600" "300"
+				  		 "200" "150" "134" "110" "75" "62" "50"
+		allowdata[0-255] "7" "8"
+		allowstop[0-255] "1" "2"
+		allowparity[0-255] "none" "odd" "even"
+		allowtxprot[0-255] "xon" "xpc" "dsr" "cts"
+		allowrxprot[0-255] "xon" "dtr" "rts"
+
+	prompt "Select Card Type"
+		choice "Not Installed"
+		help 
+"Select this option if there is no driver installed. \n\n
+There is help for each driver in the list. Highlight the appropriate
+driver and press F1."

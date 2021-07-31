@@ -1,0 +1,104 @@
+;
+; IMSMAX.DDF
+; Multiuser DOS device driver configuration file for Maxpeed Card
+;
+; Copyright (C) 1994 Intelligent Micro Software Ltd.
+; All rights reserved.
+;
+; $Header: IMSMAX.DDF 1.7 95/01/18 11:28:30 RICH$
+;
+
+define "ADDRESS_PROMPT"
+
+	prompt "Address Range"
+		choice "D800-D9FF"  mu_port 0D800h  mem 0D800h-0D9FFh
+		choice "C000-C1FF"  mu_port 0C000h  mem 0C000h-0C1FFh
+		choice "C200-C3FF"  mu_port 0C200h  mem 0C200h-0C3FFh
+		choice "C400-C5FF"  mu_port 0C400h  mem 0C400h-0C5FFh
+		choice "C600-C7FF"  mu_port 0C600h  mem 0C600h-0C7FFh
+		choice "C800-C9FF"  mu_port 0C800h  mem 0C800h-0C9FFh
+		choice "CA00-CBFF"  mu_port 0CA00h  mem 0CA00h-0CBFFh
+		choice "CC00-CDFF"  mu_port 0CC00h  mem 0CC00h-0CDFFh
+		choice "CE00-CFFF"  mu_port 0CE00h  mem 0CE00h-0CFFFh
+		choice "D000-D1FF"  mu_port 0D000h  mem 0D000h-0D1FFh
+		choice "D200-D3FF"  mu_port 0D200h  mem 0D200h-0D3FFh
+		choice "D400-D5FF"  mu_port 0D400h  mem 0D400h-0D5FFh
+		choice "D600-D7FF"  mu_port 0D600h  mem 0D600h-0D7FFh
+		choice "D800-D9FF"  mu_port 0D800h  mem 0D800h-0D9FFh
+		choice "DA00-DBFF"  mu_port 0DA00h  mem 0DA00h-0DBFFh
+		choice "DC00-DDFF"  mu_port 0DC00h  mem 0DC00h-0DDFFh
+		choice "DE00-DFFF"  mu_port 0DE00h  mem 0DE00h-0DFFFh
+		choice "E000-E1FF"  mu_port 0E000h  mem 0E000h-0E1FFh
+		choice "E200-E3FF"  mu_port 0E200h  mem 0E200h-0E3FFh
+		choice "E400-E5FF"  mu_port 0E400h  mem 0E400h-0E5FFh
+		choice "E600-E7FF"  mu_port 0E600h  mem 0E600h-0E7FFh
+		choice "E800-E9FF"  mu_port 0E800h  mem 0E800h-0E9FFh
+		choice "EA00-EBFF"  mu_port 0EA00h  mem 0EA00h-0EBFFh
+		choice "EC00-EDFF"  mu_port 0EC00h  mem 0EC00h-0EDFFh
+		choice "EE00-EFFF"  mu_port 0EE00h  mem 0EE00h-0EFFFh
+		help
+"Select the address range to be used. SETUP will set this memory to 'Disabled'.
+Do not set this memory back to 'Enabled' or 'Autoscan' or the card will not
+be found."
+
+define "COMPATIBLE"
+
+FixedResources
+	mu_latch 0
+
+	allowuse[0-255]     "unused"        "graf"          "grafprn"
+						"grafpprn"      "grafauxprn"    "grafauxpprn"
+						"grafmouse"     "grafmousepprn" "aux"
+						"auxprn"        "auxpprn"       "mouse"
+						"mousepprn"
+
+	include "ADDRESS_PROMPT"
+
+	prompt "Perform Compatability Test at boot time"
+		choice "Y" config ""
+		choice "N" config "/n"
+		help
+		"Set to Y if you wish to test your VGA card compatability
+		with MAXPEED.\n*Warning* If you set this option to N the
+		operation of your VGA screens may be unpredictable."
+
+define "INCOMPATIBLE"
+
+FixedResources
+	mu_latch 1
+
+	allowuse[0-0]       "unused" 		"graf"
+
+	allowuse[1-255]     "unused"        "graf"          "grafprn"
+						"grafpprn"      "grafauxprn"    "grafauxpprn"
+						"grafmouse"     "grafmousepprn" "aux"
+						"auxprn"        "auxpprn"       "mouse"
+						"mousepprn"
+
+	include "ADDRESS_PROMPT"
+
+DriverID "IMSMAX.SYS"
+	DriverName "IMS Maxpeed Card Driver"
+	DriverType "extmulti"
+
+	FixedResources
+
+	mu_dd_id 059h
+	mu_xor_and 0
+	mu_reset 0
+	mu_resdat 0
+	mu_nports 4
+	onedecl 1
+
+	Prompt "Card Type"
+		choice "Maxpeed SV-4, Compatible VGA Card" include "COMPATIBLE"
+		choice "Maxpeed SV-4, no VGA Card" include "INCOMPATIBLE"
+		Help
+"* Maxpeed SV-4, compatible VGA Card * supports up to 4 Maxpeed Multi-VGA cards
+coexistant with a compatible VGA card. Running MAXTEST.EXE will indicate your hardware compatibility with MaxPeed
+cards.\n\n
+* Maxpeed SV-4, no VGA Card * supports up to 4 MaxPeed Multi-VGA cards in a single
+machine. Port 1 of the first Maxpeed card in your machine will act as the main monitor
+and will use the main keyboard. You may use the COM and LPT devices on
+the first MaxStation as AUX or Printer devices."
+

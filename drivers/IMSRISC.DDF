@@ -1,0 +1,70 @@
+;
+; IMSRISC.DDF
+; Multiuser DOS device driver configuration file for TCL
+; Superport-RISC card
+;
+; Copyright (C) 1994 Intelligent Micro Software Ltd.
+; All rights reserved.
+;
+; $Header: IMSRISC.DDF 1.2 94/10/06 09:18:55 RICH$
+;
+
+
+Define "SUPERPRT"
+
+	FixedResources
+		mu_nports 64
+		mu_xor_and 00ffh
+		mu_resdat 0ff00h
+		mu_dd_id 058h
+
+	prompt "Number of ports"
+		choice "8" mu_nports 8
+		choice "16" mu_nports 16
+		choice "24" mu_nports 24
+		choice "32" mu_nports 32
+		choice "40" mu_nports 40
+		choice "48" mu_nports 48
+		choice "56" mu_nports 56
+		choice "64" mu_nports 64
+		help
+		"Select the number of ports you require."
+
+	prompt "Adapter Memory Address"
+	  choice "C800-C9FF"  mu_port 0C800h  mem 0C800h-0C9FFh
+	  choice "CA00-CBFF"  mu_port 0CA00h  mem 0CA00h-0CBFFh
+	  choice "CC00-CDFF"  mu_port 0CC00h  mem 0CC00h-0CDFFh
+	  choice "CE00-CFFF"  mu_port 0CE00h  mem 0CE00h-0CFFFh
+	  choice "D000-D1FF"  mu_port 0D000h  mem 0D000h-0D1FFh
+	  choice "D200-D3FF"  mu_port 0D200h  mem 0D200h-0D3FFh
+	  choice "D400-D5FF"  mu_port 0D400h  mem 0D400h-0D5FFh
+	  choice "D600-D7FF"  mu_port 0D600h  mem 0D600h-0D7FFh
+	  choice "D800-D9FF"  mu_port 0D800h  mem 0D800h-0D9FFh
+	  choice "DA00-DBFF"  mu_port 0DA00h  mem 0DA00h-0DBFFh
+	  choice "DC00-DDFF"  mu_port 0DC00h  mem 0DC00h-0DDFFh
+	  choice "DE00-DFFF"  mu_port 0DE00h  mem 0DE00h-0DFFFh
+	  choice "E000-E1FF"  mu_port 0E000h  mem 0E000h-0E1FFh
+	  choice "E200-E3FF"  mu_port 0E200h  mem 0E200h-0E3FFh
+	  choice "E400-E5FF"  mu_port 0E400h  mem 0E400h-0E5FFh
+	  choice "E600-E7FF"  mu_port 0E600h  mem 0E600h-0E7FFh
+	  choice "E800-E9FF"  mu_port 0E800h  mem 0E800h-0E9FFh
+	  choice "EA00-EbFF"  mu_port 0EA00h  mem 0EA00h-0EBFFh
+	  choice "EC00-EDFF"  mu_port 0EC00h  mem 0EC00h-0EDFFh
+	  choice "EE00-EFFF"  mu_port 0EE00h  mem 0EE00h-0EFFFh
+	  choice "Autoscan"   mu_port 0FFFFh
+	  help
+	"Select the memory address configured on the SuperPort card."
+
+
+DriverID "IMSRISC.SYS"
+	DriverName "SuperPort card"
+	DriverType "extmulti"
+
+	FixedResources
+
+	Prompt "Card Type"
+		choice "TCL RISC SuperPort"     include "SUPERPRT"
+		Help
+"* SuperPort RISC Card *\n\n
+This driver supports the SuperPort RISC, a high performance Multi-port 
+card capable of expansion from 8 to 64 ports."

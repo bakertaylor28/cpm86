@@ -1,0 +1,21 @@
+;
+; VT100TNPC.DDF
+; Multiuser DOS device driver configuration file for VT 100 terminal
+;
+; Revision 1.0	- September 1994
+;
+
+DriverID "VT100NPC.SYS"
+	DriverName "VT 100"
+	DriverType "extterm"
+
+	FixedResources
+
+	prompt "Terminal Type"
+		choice "VT 100/ANSI" termatt 020h termsat 00fh termemul 2 termtype 082h
+		help "Select the terminal type required.\n\n
+Use Wyse 60/120 for Wyse and other PCTERM terminals.\n
+Use Wyse 370 for Wyse and other colour PCTERM terminals including older C192's.\n
+Use IMSTERM for terminals running the IMSTERM protocol, eg PC's running IMSTERM, later versions of the C192 terminal, or one of IMS's network terminal emulators\n
+Use DUMB only when none of the above are suitable. NB it gives only one DOS session, and limited support for applications"
+

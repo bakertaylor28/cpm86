@@ -1,0 +1,58 @@
+;
+; IMSSI.DDF
+; Multiuser DOS device driver configuration file for IMS/Specialix Card
+;
+; Copyright (C) 1994 Intelligent Micro Software Ltd.
+; All rights reserved.
+;
+; Revision 1.0	- Febraury 1994
+;
+
+define "MACRO1"
+
+FixedResources
+	mu_latch 0
+	mu_xor_and 0
+	mu_reset 0
+	mu_resdat 0
+	mu_dd_id 052h
+	allowuse[0-255] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+
+
+	prompt "Number of ports"
+		choice "8" mu_nports 8
+		choice "16" mu_nports 16
+		choice "24" mu_nports 24
+		choice "32" mu_nports 32
+		help
+		"Select the number of ports you require."
+
+	prompt "Address Range"
+		choice "C000-CBFF"  mu_port 0C000h  config "/ADDRESS=0C000" mem 0C000h-0CBFFh
+		choice "D000-DBFF"  mu_port 0D000h  config "/ADDRESS=0D000" mem 0D000h-0DBFFh
+		choice "E000-EBFF"  mu_port 0E000h  config "/ADDRESS=0E000" mem 0E000h-0EBFFh
+		help
+		"Select the address range to be used"
+
+	prompt "Interrupt Level"
+		choice "5"  mu_irq 5  config "/IRQ=5"  int 5
+		choice "9"  mu_irq 9  config "/IRQ=9"  int 9
+		choice "11" mu_irq 11 config "/IRQ=11" int 11
+		choice "12" mu_irq 12 config "/IRQ=12" int 12
+		choice "15" mu_irq 15 config "/IRQ=15" int 15
+		help
+		"Select the interrupt level to be used"
+
+
+DriverID "IMSSI.SYS"
+	DriverName "IMS/Specialix Card Driver"
+	DriverType "extmulti"
+
+	FixedResources
+
+	Prompt "Card Type"
+		choice "IMS/Specialix Card" include "MACRO1"
+		Help
+"* Specialix card *\n\n
+This driver supports the Specialix multi-port card."
+

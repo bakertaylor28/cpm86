@@ -1,0 +1,25 @@
+;                                                                             
+; INTTERM.DDF
+; Multiuser DOS device driver configuration file for internally driven
+; terminals
+;
+; Revision 1.0	- December 1993
+;                                                                           
+
+DriverID "INTTERM.INT"
+	DriverName "Serial Terminals"
+	DriverType "intterm"
+
+	FixedResources
+	
+	prompt "Terminal Type"
+		choice "Wyse 60/120" termatt 020h termsat 002h termemul 0 termtype 0
+		choice "Wyse 370" termatt 020h termsat 00fh termemul 1 termtype 0
+		choice "IMSTERM" termatt 020h termsat 00fh termemul 2 termtype 0
+		choice "Dumb" termatt 010h termsat 000h termemul 0 termtype 0
+		help "Select the terminal type required.\n\n
+Use Wyse 60/120 for Wyse and other PCTERM terminals.\n
+Use Wyse 370 for Wyse and other colour PCTERM terminals including older C192's.\n
+Use IMSTERM for terminals running the IMSTERM protocol, eg PC's running IMSTERM, later versions of the C192 terminal, or one of IMS's network terminal emulators\n
+Use DUMB only when none of the above are suitable. NB it gives only one DOS session, and limited support for applications"
+

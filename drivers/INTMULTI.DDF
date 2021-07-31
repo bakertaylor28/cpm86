@@ -1,0 +1,263 @@
+;
+; INTMULTI.DDF
+; Multiuser DOS device driver configuration file for IMS internal
+; 8250/16450/16550 (and compatible) dumb/buffered cards
+;
+; Copyright (C) 1994 Intelligent Micro Software Ltd.
+; All rights reserved.
+;
+; $Header: INTMULTI.DDF 1.3 94/09/29 13:36:27 JULES$
+
+Define "IRQ_PROMPT"
+
+	prompt "Adapter Interrupt Level"
+		choice "3"  mu_irq 3  int 3
+		choice "4"  mu_irq 4  int 4
+		choice "5"  mu_irq 5  int 5
+		choice "7"  mu_irq 7  int 7
+		choice "10" mu_irq 10 int 10
+		choice "11" mu_irq 11 int 11
+		choice "12" mu_irq 12 int 12
+		choice "15" mu_irq 15 int 15
+		help
+		"Select the interrupt level to be used"
+
+Define "COMn"
+
+	FixedResources
+		mu_nports 1
+		mu_xor_and 0ffffh
+		mu_resdat 00h
+		mu_dd_id 090h
+		i_en 1
+		mu_latch 03ffh
+		mu_reset 0h
+
+	include "IRQ_PROMPT"
+
+	prompt "Adapter I/O Address Range"
+		choice "3e8h (COM 3)" mu_port 03E8h io 03E8h-03EFh
+		choice "2e8h (COM 4)" mu_port 02E8h io 02E8h-02EFh
+
+		Help
+		"Select the I/O address range to be used."
+
+Define "IMS4PORT"
+
+	FixedResources
+		mu_nports 4
+		mu_xor_and 0f0fh
+		mu_resdat 0ff80h
+		mu_dd_id 041h
+
+	include "IRQ_PROMPT"
+
+	prompt "Adapter I/O Address Range"
+		choice "1a0h-1bfh" mu_port 01a0h mu_latch 01bfh mu_reset 01bfh io 01a0h-01bfh
+		choice "2a0h-2bfh" mu_port 02a0h mu_latch 02bfh mu_reset 02bfh io 02a0h-02bfh
+
+		Help
+		"Select the I/O address range to be used."
+
+Define "IMS4PRTB"
+
+	FixedResources
+		mu_nports 4
+		mu_xor_and 000fh
+		mu_resdat 0ff00h
+		mu_dd_id 042h
+
+	Include "IRQ_PROMPT"
+
+	prompt "Adapter I/O Address Range"
+		choice "180h-1bfh" mu_port 0180h mu_latch 0187h mu_reset 0187h io 0180h-01bfh
+		choice "280h-29fh" mu_port 0280h mu_latch 0287h mu_reset 0287h io 0280h-029fh
+		choice "2c0h-2dfh" mu_port 02c0h mu_latch 02c7h mu_reset 02c7h io 02c0h-02dfh
+		choice "300h-31fh" mu_port 0300h mu_latch 0307h mu_reset 0307h io 0300h-031fh
+		choice "580h-59fh" mu_port 0580h mu_latch 0587h mu_reset 0587h io 0580h-059fh
+		choice "680h-69fh" mu_port 0680h mu_latch 0687h mu_reset 0687h io 0680h-069fh
+		choice "700h-71fh" mu_port 0700h mu_latch 0707h mu_reset 0707h io 0700h-071fh
+		choice "140h-15fh" mu_port 0140h mu_latch 0147h mu_reset 0147h io 0140h-015fh
+		choice "1c0h-1dfh" mu_port 01c0h mu_latch 01c7h mu_reset 01c7h io 01c0h-01dfh
+		choice "240h-25fh" mu_port 0240h mu_latch 0247h mu_reset 0247h io 0240h-025fh
+		help
+		"Select the I/O address configured on the IMS or Hostess card."
+
+Define "IMS8PRTB"
+
+	FixedResources
+		mu_nports 8
+		mu_xor_and 00ffh
+		mu_resdat 0ff00h
+		mu_dd_id 043h
+
+	Include "IRQ_PROMPT"
+
+	prompt "Adapter I/O Address Range"
+		choice "140h-17fh" mu_port 0140h mu_latch 0147h mu_reset 0147h io 0140h-017fh
+		choice "180h-1bfh" mu_port 0180h mu_latch 0187h mu_reset 0187h io 0180h-01bfh
+		choice "1c0h-1ffh" mu_port 01c0h mu_latch 01c7h mu_reset 01c7h io 01c0h-01ffh
+		choice "240h-27fh" mu_port 0240h mu_latch 0247h mu_reset 0247h io 0240h-027fh
+		choice "280h-2bfh" mu_port 0280h mu_latch 0287h mu_reset 0287h io 0280h-02bfh
+		choice "2c0h-2ffh" mu_port 02c0h mu_latch 02c7h mu_reset 02c7h io 02c0h-02ffh
+		choice "300h-33fh" mu_port 0300h mu_latch 0307h mu_reset 0307h io 0300h-033fh
+		choice "580h-5bfh" mu_port 0580h mu_latch 0587h mu_reset 0587h io 0580h-05bfh
+		choice "680h-6bfh" mu_port 0680h mu_latch 0687h mu_reset 0687h io 0680h-06bfh
+		choice "700h-73fh" mu_port 0700h mu_latch 0707h mu_reset 0707h io 0700h-073fh
+		help
+		"Select the I/O address configured on the IMS or Hostess card."
+
+Define "ARNET4"
+
+	FixedResources
+		mu_nports 4
+		mu_xor_and 0f0fh
+		mu_resdat 0
+		mu_dd_id 043h
+
+	Include "IRQ_PROMPT"
+
+	prompt "Adapter I/O Address Range"
+		choice "130h-15fh" mu_port 0140h mu_latch 0132h mu_reset 0132h io 0130h-015fh
+		choice "170h-19fh" mu_port 0180h mu_latch 0172h mu_reset 0172h io 0170h-019fh
+		choice "1b0h-1dfh" mu_port 01c0h mu_latch 01b2h mu_reset 01b2h io 01b0h-01dfh
+		choice "1f0h-21fh" mu_port 0200h mu_latch 01f2h mu_reset 01f2h io 01f0h-021fh
+		choice "230h-25fh" mu_port 0240h mu_latch 0232h mu_reset 0232h io 0230h-025fh
+		choice "270h-29fh" mu_port 0280h mu_latch 0272h mu_reset 0272h io 0270h-029fh
+		choice "2b0h-2dfh" mu_port 02c0h mu_latch 02b2h mu_reset 02b2h io 02b0h-02dfh
+		choice "2f0h-31fh" mu_port 0300h mu_latch 02f2h mu_reset 02f2h io 02f0h-031fh
+		choice "330h-35fh" mu_port 0340h mu_latch 0332h mu_reset 0332h io 0330h-035fh
+
+		help
+		"Select the I/O address configured on the ARNET card."
+
+Define "ARNET8"
+
+	FixedResources
+		mu_nports 8
+		mu_xor_and 0ffffh
+		mu_resdat 0
+		mu_dd_id 043h
+
+	Include "IRQ_PROMPT"
+
+	prompt "Adapter I/O Address Range"
+		choice "270h-2bfh" mu_port 0280h mu_latch 0272h mu_reset 0272h io 0270h-02bfh
+		choice "130h-17fh" mu_port 0140h mu_latch 0132h mu_reset 0132h io 0130h-017fh
+		choice "170h-1bfh" mu_port 0180h mu_latch 0172h mu_reset 0172h io 0170h-01bfh
+		choice "1b0h-1ffh" mu_port 01c0h mu_latch 01b2h mu_reset 01b2h io 01b0h-01ffh
+		choice "1f0h-23fh" mu_port 0200h mu_latch 01f2h mu_reset 01f2h io 01f0h-023fh
+		choice "230h-27fh" mu_port 0240h mu_latch 0232h mu_reset 0232h io 0230h-027fh
+		choice "270h-2bfh" mu_port 0280h mu_latch 0272h mu_reset 0272h io 0270h-02bfh
+		choice "2b0h-2ffh" mu_port 02c0h mu_latch 02b2h mu_reset 02b2h io 02b0h-02ffh
+		choice "2f0h-33fh" mu_port 0300h mu_latch 02f2h mu_reset 02f2h io 02f0h-033fh
+		choice "330h-37fh" mu_port 0340h mu_latch 0332h mu_reset 0332h io 0330h-037fh
+
+		help
+		"Select the I/O address configured on the ARNET card."
+
+Define "DIGICHAN8"
+
+	FixedResources
+		mu_nports 8
+		mu_latch 0140h
+		mu_xor_and 0h
+		mu_resdat 0edcdh
+		mu_dd_id 046h
+		i_en 1
+		io 0140h-0140h
+
+	Include "IRQ_PROMPT"
+
+	prompt "Adapter I/O Address Range"
+		choice "100h" mu_port 0100h mu_reset 0100h io 0100h-0100h
+		choice "280h" mu_port 0280h mu_reset 0280h io 0280h-0280h
+		choice "2c0h" mu_port 02c0h mu_reset 02c0h io 02c0h-02c0h
+		help
+		"Select the I/O address configured on the Digichannel card."
+
+Define "DIGICHAN4"
+
+	FixedResources
+		mu_nports 4
+		mu_latch 0140h
+		mu_xor_and 0h
+		mu_resdat 0edcdh
+		mu_dd_id 046h
+		i_en 1
+		io 0140h-0140h
+
+	Include "IRQ_PROMPT"
+
+	prompt "Adapter I/O Address Range"
+		choice "100h" mu_port 0100h mu_reset 0100h io 0100h-0100h
+		choice "280h" mu_port 0280h mu_reset 0280h io 0280h-0280h
+		choice "2c0h" mu_port 02c0h mu_reset 02c0h io 02c0h-02c0h
+		help
+		"Select the I/O address configured on the Digichannel card."
+
+Define "BOCA8PRT"
+
+	FixedResources
+		mu_nports 8
+		mu_xor_and 00ffh
+		mu_resdat 0ff00h
+		mu_dd_id 043h
+		i_en 1
+
+	Include "IRQ_PROMPT"
+
+	prompt "Adapter I/O Address Range"
+		choice "140h-17fh" mu_port 0140h mu_latch 0147h mu_reset 0147h io 0140h-017fh
+		choice "180h-1bfh" mu_port 0180h mu_latch 0187h mu_reset 0187h io 0180h-01bfh
+		choice "1c0h-1ffh" mu_port 01c0h mu_latch 01c7h mu_reset 01c7h io 01c0h-01ffh
+		choice "240h-27fh" mu_port 0240h mu_latch 0247h mu_reset 0247h io 0240h-027fh
+		choice "280h-2bfh" mu_port 0280h mu_latch 0287h mu_reset 0287h io 0280h-02bfh
+		choice "2c0h-2ffh" mu_port 02c0h mu_latch 02c7h mu_reset 02c7h io 02c0h-02ffh
+		choice "300h-33fh" mu_port 0300h mu_latch 0307h mu_reset 0307h io 0300h-033fh
+		choice "580h-5bfh" mu_port 0580h mu_latch 0587h mu_reset 0587h io 0580h-05bfh
+		choice "680h-6bfh" mu_port 0680h mu_latch 0687h mu_reset 0687h io 0680h-06bfh
+		choice "700h-73fh" mu_port 0700h mu_latch 0707h mu_reset 0707h io 0700h-073fh
+		help
+		"Select the I/O address configured on the BOCA 8 port card."
+
+
+;
+; Card types supported prompt
+;
+
+DriverID "INTMULTI"
+	DriverName "Internal Serial Interface Card(s)"
+	DriverType "intmulti"
+
+	FixedResources
+		allowuse[0-255] "unused" "prn" "aux" "auxprn" "mouse" "term" "termprn"
+
+	Prompt "Card Type"
+		choice "COM 3 or 4" include "COMn"
+		choice "4 Port Dumb (IMS or AST)"     include "IMS4PORT"
+		choice "4 Port Buffered (IMS or Hostess)" include "IMS4PRTB"
+		choice "8 Port Buffered (IMS or Hostess)" include "IMS8PRTB"
+		choice "IBM Dual Async (1 Card)" mu_port 0ff00h mu_nports 2
+			mu_latch 0ff00h mu_irq 3 mu_xor_and 0 mu_reset 0
+			mu_resdat 0 mu_dd_id 044h i_en 1
+		choice "IBM Dual Async (2 Card)" mu_port 0ff00h mu_nports 4
+			mu_latch 0ff00h mu_irq 3 mu_xor_and 0 mu_reset 0
+			mu_resdat 0 mu_dd_id 044h i_en 1
+		choice "IBM Dual Async (3 Card)" mu_port 0ff00h mu_nports 6
+			mu_latch 0ff00h mu_irq 3 mu_xor_and 0 mu_reset 0
+			mu_resdat 0 mu_dd_id 044h i_en 1
+		choice "4 Port Dumb/Buffered (ARNET)" include "ARNET4"
+		choice "8 Port Dumb/Buffered (ARNET)" include "ARNET8"
+		choice "4 Port Digichannel Card" include "DIGICHAN4"
+		choice "8 Port Digichannel Card" include "DIGICHAN8"
+		choice "8 Port BocaBoard BP1008 Card" include "BOCA8PRT"
+		Help
+"* Internal Driver *\n\n
+This is a multiport driver internal to IMS Multiuser DOS. i.e. it does
+not require a special driver file to be loaded. To install an internal
+driver, select the card you require from the multiport driver list
+and follow the instructions. You will be asked for hardware and
+serial line parameters. Be sure to consult the documentation for the
+multiport card before proceeding.\n\n
+Help (F1) is available on each driver in the list."
