@@ -1,0 +1,143 @@
+Notes on the WYSE 50 terminal driver for IMS MDOS
+=================================================
+
+Only 24 lines are displayed - the 25th is 'thrown away'. If the screen is
+scrolled when in 25-line mode, blank lines will be scrolled up the screen
+instead of the required text. To avoid this problem, the terminal sessions
+should be configured as having the status line enabled (using CONFIG, or
+SETUP for MDOS v7). Non-scrolling 25-line applications will work OK but
+of course the last line will be invisible.
+
+The PC's graphical characters are translated to the nearest equivalent on
+the Wyse 50 - the line drawing characters are there (single lines only), as
+are the shaded block characters. Accented characters are mapped to the
+non-accented equivalent, and other characters converted as closely as
+possible.
+
+Inverse video is implemented using the 'protected' attribute of the
+WYSE 50. Any text which would be displayed with a background colour of
+anything other than black will be shown in inverse on the Wyse 50.
+
+The function keys F1-F12 and the shifted versions are mapped to the PC
+equivalents. The cursor keys are mapped to the PC arrow keys. Keys F13-F16
+are used for miscellaneous Ctrl+Cursor keys as shown in the table below.
+
+Because the arrow keys return simple control codes, there is no way
+to distinguish between, say, Left arrow, Ctrl-H and BackSpace - all of
+which return 08h. If your application needs to use a control code which
+the Wyse 50 uses for another key, you can precede it with Funct: for instance
+pressing Funct Ctrl-H will generate the scan codes for the Ctrl and H keys
+rather than the left arrow key. Alternatively you can use the Esc key in
+place of the Funct key.
+
+If the screen display becomes corrupted, or when you first switch on the
+terminal, you can request a screen refresh by pressing the 'Send' key.
+
+If you have configured more than one DOS Session (Virtual Console) on the
+terminal, you can switch between them by pressing Funct followed by a number
+between 1 and 8.
+
+The following is a list of special WYSE 50 keystrokes or sequences, and the
+scan codes they are converted to:
+
+
+WYSE 50 keys			PC Scan codes
+============			=============
+F1 - F12			F1 - F12
+Shift F1-F12			Shift F1-F12
+F13				Ctrl Left arrow
+F14				Ctrl Right arrow
+F15				Ctrl Up arrow
+F16				Ctrl Down arrow
+Shift F13			Ctrl Home
+Shift F14			Ctrl End
+Shift F15			Ctrl PgUp
+Shift F16			Ctrl PgDn
+Arrow keys			Arrow keys
+Ctrl-H,J,K,L			Left,Down,Up,Right arrows
+Backspace			Left arrow
+Del				Backspace
+Send				Screen refresh
+Home				Home
+Shift Home			End
+Page Next			Page Down
+Page Prev			Page Up
+Tab				Tab
+Ctrl-I				Tab
+Shift Tab			Shift Tab
+Clear Line			Ctrl-Y
+Clear Screen			Ctrl-Y
+Del Char			Del
+Del Line			Del
+Ins				Insert
+Repl				Insert
+Ins Char			Esc
+Ins Line			Esc
+Return				Enter
+Ctrl-M				Enter
+
+Funct 1-8			Switch DOS Session
+
+Funct Ctrl-A..Z			Ctrl-A..Z
+Esc Ctrl-A..Z			Ctrl-A..Z
+
+Funct Esc			Esc
+Esc Esc				Esc
+
+
+
+When setting up the terminal (using the Shift-Setup keys) the following
+configuration is suitable:
+
+HANDSHAKE=DTR	SCREEN=80 	CURSOR=LINE 	BLINK?=ON	MODE=FDX
+DATA BIT=8	STOP BIT=1	PARITY BIT=NONE	MODEM BAUD RATE=38400
+BLK END=US/CR	AUTO NL=OFF	CR=CR		AUTO SCRL=ON	AUX BAUD R=9600
+SCRL=JUMP	STATUS=OFF	S.SAVER=OFF	PROT=REV	TEST=OFF
+KEYS?=US/UK	RET/ENTER=CR/CR	COMPATIBLE=WY50	ENHANCE=OFF
+
+All the function keys MUST be set to their default (undefined) values,
+otherwise they will not be translated correctly.
+
+
+Instructions on using the Wyse 50 terminal driver with MDOS
+===========================================================
+
+If you have MDOS 7 or later
+===========================
+
+Copy the file IMSNONPC.SYS into directory \IMSMDOS\DRIVERS
+
+Edit the file \IMSMDOS\DRIVERS\INTTERM.DDF:
+	Copy the line starting 'choice "IMSTERM"...' in the 'Terminal
+	Type' section, and modify the new line as follows:
+		Replace "IMSTERM" with "Wyse 50"
+		Replace 'termtype 0' with 'termtype 080h'
+
+Run SETUP - on the screens where you can configure terminal types (Wyse 60/120,
+Wyse 370, IMSTERM) you should now have the extra option of Wyse 50. Select
+this on the appropriate ports, and choose suitable comms parameters. Make
+sure the status line is enabled (though it will be invisible).
+
+Add a line to MCONFIG.SYS in the root of the boot drive:
+DEVICE=\IMSMDOS\DRIVERS\IMSNONPC.SYS
+
+Reboot the machine, and you should be in business.
+============================================================================
+
+
+If you have IMS MDOS earlier than version 7
+===========================================
+
+Copy the file IMSNONPC.SYS into the \OSUTILS directory.
+
+Running CONFIG should now give you the option of selecting Wyse 50 as a
+terminal type - select this on the appropriate ports, and choose suitable
+comms parameters. Make sure the status line is enabled (even though it will
+be invisible).
+
+Make sure the CCONFIG.SYS file contains the line:
+DEVICE=\OSUTILS\IMSNONPC.SYS
+
+Reboot.
+============================================================================
+

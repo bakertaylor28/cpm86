@@ -1,0 +1,192 @@
+Notes on the VT100 Terminal driver for MDOS
+
+The driver attempts to emulate a standard 102-key PC keyboard on a 
+VT100 ASCII terminal. It also attempts to map the PC character set to 
+characters available on the VT100.
+
+Since the terminal produces ASCII codes as opposed to PC scan codes, a 
+translation table is used to convert ASCII codes in the range 0-7Fh to 
+a combination of shift (or ctrl) and normal keystrokes. However the PC 
+has various non-ASCII keys such as the function keys, cursor keys, 
+etc., and these are accessed by using the VT100 PF1-PF4 keys, followed 
+by a normal keystroke. A table is used to convert these combination 
+keystrokes to scan codes.
+
+The VT100 function keys and editing keys return an escape sequence of 
+the form ESC [ nn ~ where nn is a decimal number. There is a table 
+which is used to translate these keys to shift and scan codes. Note 
+that there is a problem when these keys autorepeat, because the 
+sequence may be interrupted and cause unwanted keystrokes to be seen by 
+the application. For this reason it is best to disable autorepeat on 
+the VT100.
+
+The character set on the PC is defined for all characters between 0 and 
+FFh, whereas the VT100 contains various switchable sets defining 
+characters between 20h and 7Fh. The driver sends characters between 20h 
+and 7Eh directly to the terminal; characters between 0 and 1Fh, and 
+between 7Fh and FFh are translated to the nearest equivalent available 
+from either the VT100 ASCII set or the Special Graphics set. These 
+mapped characters are looked up in a table.
+
+All the tables are designed to be patchable by the user, with a utility 
+such as SID. Each table is preceded by a keyword and an arrow '=>'. The 
+structures and uses of the tables are as follows:
+
+
+
+ASC2SCAN=>  ASCII to scancode translation.
+
+127 entries, each consisting of two bytes. The first is the scan code 
+of a shift/ctrl/alt key, or 0 for no shifts. The second is the scan 
+code of the key used to produce the character.  The table is indexed by 
+ASCII character.
+
+For example, the entry for ASCII code 07h is at offset 0Eh, and 
+consists of the scan codes for the control and 'g' keys, i.e. 1Dh 22h. 
+However the entry for code 09h (offset 12h) gives the scan code for the 
+unshifted tab key, i.e. 00h 0Fh.
+
+Note that, unlike on a PC, there is no way for applications to 
+distinguish between the user pressing (for example) the Tab key or 
+pressing Ctrl-I (both of which return ASCII 09h).  The COMPOSE=> table 
+could be used if it is necessary to simulate both these keystrokes.
+
+
+
+
+
+
+ESCTILDE=>  VT100 special key translation.
+
+This table is similar in structure to the ASC2SCAN table, but is 
+indexed by a number 0-40 which is sent as part of the escape sequence 
+ESC [ nn ~ when VT100 function keys or editing keys are pressed. For 
+example the Find key produces the sequence ESC [ 1 ~ which is mapped to 
+the PC Home key, so the corresponding entry at offset (2*1) contains 
+the scan codes 0 and 47h.
+
+The following mappings are used in the driver as supplied:
+
+Index      VT100 key         PC key
+1          Find              Home
+2          Insert Here       Ins
+3          Remove            Del
+4          Select            End
+5          Prev Screen       Pg Up
+6          Next Screen       Pg Dn
+17-21      F6-F10            F6-F10
+23-24      F11-F12           F11-F12
+25-26      F13-F14           F1-F2
+28         Help              F1
+29         Do                F10
+31-34      F17-F20           F1-F4
+
+All other entries are spare.
+
+
+
+COMPOSE=>  PF1-PF4 + ASCII to PC scancode translation.
+
+The PF1-4 keys may be pressed before any of the standard ASCII keys, 
+and the resulting combination is looked up in this table to convert it 
+to a shift/scancode combination. This feature is used to simulate the 
+'extended' PC keys which are unavailable on the VT100 keyboard, such as 
+the function keys, Escape key, editing keys, etc. The table consists of 
+a series of 4-byte entries, terminated with four zero bytes. The first 
+byte in each entry is the ASCII code used in the combination, the 
+second is a number 1-4 representing the keys PF1- PF4. The third and 
+fourth bytes are shift and scan codes, as in the ASC2SCAN table. For 
+example the Shifted PC F1 key may be simulated by pressing PF2 followed 
+by 1, and this is represented in the table by the sequence 
+31h,02h,2Ah,3Bh.
+
+A special scan code 0FFh can be specified, which causes the terminal to 
+be reinitialised and the screen refreshed - this is needed when the 
+terminal is switched on after the host computer has booted, in order to 
+set up the various operating modes, character sets, etc.  which are 
+needed by the driver. By default this is mapped to PF1 followed by the 
+SPACE character.
+
+
+
+
+The following combinations are used in the driver as supplied:
+
+
+PF key     ASCII key         PC Key
+PF1        SPACE             Reinitialise terminal
+PF1        ` (back quote)    Esc
+PF1        i or I            Ins
+PF1        u or U            Pg Up
+PF1        d or D            Pg Dn
+PF1        1 to 9            F1 to F9
+PF1        0                 F10
+PF1        -                 F11
+PF1        =                 F12
+
+PF2        ` (back quote)    Shift Esc
+PF2        1 to =            Shift F1 to F12
+
+PF3        ` (back quote)    Ctrl Esc
+PF3        1 to =            Ctrl F1 to F12
+PF3        a to h            Switch to DOS Session 1 to 8
+
+PF4        ` (back quote)    Alt Esc
+PF4        1 to =            Alt F1 to F12
+PF4        a to z            Alt A to Z
+
+There is space in the table for about twenty more combinations.
+
+
+
+INIT=>  Initialisation codes
+
+This is a sequence of escape codes which is sent to the terminal to 
+initialise it. It is sent when the host machine is rebooted, or when 
+the PF1 SPACE key combination is pressed.
+
+The default sequence is as follows:
+
+      Ctrl-X           ; Abort any escape sequence in progress
+      ESC [ 40 h       ; Set 25-line mode
+      ESC ( B          ; Set font G0 = ASCII
+      ESC ) 0          ; Set font G1 = Special Graphics
+      ESC >            ; Switch off application modes...
+      ESC [ ? 1 l
+      ESC [ ? 16 l
+      ESC [ ? 8 l      ; Disable keyboard autorepeat
+      0                ; Terminate the sequence.
+
+
+
+
+CTLTRANS=>  Convert graphics chars 00-1Fh
+
+This is a look-up table which is used to convert graphics characters in 
+the range 0-1Fh to suitable characters from the sets available (ASCII 
+and Special Graphics) on the VT100.  Entries in the range 20h to 7Eh 
+are taken from the ASCII character set, and entries in the range A0h to 
+FEh have the top bit cleared and are then taken from the Special 
+Graphics character set.
+
+
+
+HITRANS=>  Convert graphics chars 7Fh-FFh
+
+This is a table in the same format as CTLTRANS=>, and is used to 
+translate characters in the range 7Fh to FFh. These are mostly accented 
+foreign characters (which are translated to non-accented equivalents) 
+and various line-drawing and graphics characters. Only single- line 
+characters are available on the VT100, and only one shaded block 
+character - this may cause problems with some PC programs which use 
+different shaded blocks or double-lines to distinguish different 
+operating modes.
+
+
+
+Configuring MDOS
+
+Copy the driver into the system directory on the host machine (normally 
+C:\OSUTILS), ensuring that it is named IMSNONPC.SYS. When you run 
+CONFIG and configure a terminal on a serial port, you should now have 
+the option to select 'VT100' in the Terminal Type field.
